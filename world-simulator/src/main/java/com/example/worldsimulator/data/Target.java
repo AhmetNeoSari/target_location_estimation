@@ -1,5 +1,6 @@
 package com.example.worldsimulator.data;
 
+import com.example.basedomain.Point;
 import com.example.worldsimulator.service.TargetPositionPublisher;
 import jakarta.annotation.PostConstruct;
 import lombok.Data;

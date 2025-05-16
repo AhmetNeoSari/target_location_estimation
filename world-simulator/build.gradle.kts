@@ -25,6 +25,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
+	implementation(project(":base-domain"))
 }
 
 tasks.withType<Test> {
