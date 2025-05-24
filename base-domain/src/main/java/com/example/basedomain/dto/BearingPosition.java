@@ -10,4 +10,9 @@ import lombok.NoArgsConstructor;
 public class BearingPosition {
     private int degree;
     private double distance;
+    private String sourceName;
+
+    public BearingPosition(String sourceName) {
+        this.sourceName = sourceName;
+    }
 }

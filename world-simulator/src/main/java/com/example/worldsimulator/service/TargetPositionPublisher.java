@@ -1,6 +1,6 @@
 package com.example.worldsimulator.service;
 
-import com.example.basedomain.Point;
+import com.example.basedomain.dto.Point;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,15 +26,12 @@ public class TargetPositionPublisher {
 
     public void sendMessage(Point point)
     {
-        LOGGER.info("Target message publishing");
         Message<Point> message = MessageBuilder
                 .withPayload(point)
                 .setHeader(KafkaHeaders.TOPIC, topic.name())
                 .build();
 
         kafkaTemplate.send(message);
-//        kafkaTemplate.
-        LOGGER.info("Target message published");
     }
 
 

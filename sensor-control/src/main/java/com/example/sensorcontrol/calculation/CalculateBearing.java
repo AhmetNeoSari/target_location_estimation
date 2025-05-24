@@ -1,7 +1,7 @@
 package com.example.sensorcontrol.calculation;
 
 //import java.awt.*;
-import com.example.basedomain.Point;
+import com.example.basedomain.dto.Point;
 
 public class CalculateBearing {
     public static double bearing(Point sensorPoint, Point targetPoint)

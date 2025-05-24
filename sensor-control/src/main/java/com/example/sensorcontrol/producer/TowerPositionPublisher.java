@@ -1,6 +1,6 @@
 package com.example.sensorcontrol.producer;
 
-import com.example.basedomain.Point;
+import com.example.basedomain.dto.Point;
 import com.example.basedomain.config.Publisher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
