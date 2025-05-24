@@ -5,14 +5,13 @@ import com.example.sensorcontrol.calculation.CalculateBearing;
 import com.example.sensorcontrol.data.SensorTower;
 import com.example.sensorcontrol.producer.TargetBearingPositionPublisher;
 import com.example.sensorcontrol.producer.TowerPositionPublisher;
-import jakarta.annotation.PostConstruct;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-import com.example.basedomain.Point;
+import com.example.basedomain.dto.Point;
 
 @Service
 public class PositionConsumer {
@@ -21,38 +20,27 @@ public class PositionConsumer {
     private final TowerPositionPublisher towerPositionPublisher;
     private final TargetBearingPositionPublisher targetBearingPositionPublisher;
 
-    private final int tower1PosX;
-    private final int tower1PosY;
-    private final int tower2PosX;
-    private final int tower2PosY;
-
     private SensorTower tower1 ;
     private SensorTower tower2 ;
 
     @Autowired
     public PositionConsumer(@Value("${SensorTower1.Position.X}") final int tower1PosX,
                             @Value("${SensorTower1.Position.Y}") final int tower1PosY,
+                            @Value("${SensorTower1.name}") final String tower1Name,
                             @Value("${SensorTower2.Position.X}") final int tower2PosX,
                             @Value("${SensorTower2.Position.Y}") final int tower2PosY,
+                            @Value("${SensorTower2.name}") final String tower2Name,
                             TowerPositionPublisher towerPositionPublisher,
                             TargetBearingPositionPublisher targetBearingPositionPublisher)
     {
-        this.tower1PosX = tower1PosX;
-        this.tower1PosY = tower1PosY;
-        this.tower2PosX = tower2PosX;
-        this.tower2PosY = tower2PosY;
+        tower1 = new SensorTower(new Point(tower1PosX, tower1PosY, tower1Name),
+                new BearingPosition(tower1Name));
+        tower2 = new SensorTower(new Point(tower2PosX, tower2PosY, tower2Name),
+                new BearingPosition(tower2Name));
 
         this.towerPositionPublisher = towerPositionPublisher;
         this.targetBearingPositionPublisher = targetBearingPositionPublisher;
     } //constructor
-
-    @PostConstruct
-    public void initSensorTowers()
-    {
-        // this made in this body for SOLID
-        tower1 = new SensorTower(new Point(tower1PosX, tower1PosY), new BearingPosition());
-        tower2 = new SensorTower(new Point(tower2PosX, tower2PosY), new BearingPosition());
-    } //initSensorTowers func
 
     @KafkaListener(
             topics = "${spring.kafka.topic.consume.name}",
