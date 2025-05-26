@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
@@ -17,7 +18,7 @@ public class TargetSimulator{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TargetSimulator.class);
 
-    private final int headingRad;
+    private final double headingRad;
     private Target target;
     private TargetPositionPublisher targetPositionPublisher;
     private final AtomicBoolean running = new AtomicBoolean(false); // use for interrupt thread
@@ -26,10 +27,11 @@ public class TargetSimulator{
     @Async
     public void start(){
         running.set(true);
-        LOGGER.info("TargetSimulator started.");
-        while(running.get() && !Thread.currentThread().isInterrupted()) {
+        while(running.get()) {
             try {
                 updatePositionAndPublish();
+                if(Thread.currentThread().isInterrupted())
+                    break;
             } catch (Exception e) {
                 LOGGER.error("Simulation error", e);
             }
@@ -44,16 +46,15 @@ public class TargetSimulator{
 
         double v_y = target.getSpeed() * Math.cos(headingRad);
         double v_x = target.getSpeed() * Math.sin(headingRad);
-        target.getPoint().setX((int) (target.getInitalPointX() + (v_x * timeElapsed)));
-        target.getPoint().setY((int) (target.getInitialPointY() + (v_y * timeElapsed)));
-        LOGGER.info(target.getPoint().toString());
+        target.getPoint().setX((int) Math.round(target.getInitalPointX() + (v_x * timeElapsed)));
+        target.getPoint().setY((int) Math.round(target.getInitialPointY() + (v_y * timeElapsed)));
         targetPositionPublisher.sendMessage(target.getPoint());
     }
 
     public TargetSimulator(Target target, TargetPositionPublisher targetPositionPublisher) {
         this.target = target;
         this.targetPositionPublisher = targetPositionPublisher;
-        this.headingRad = Math.toRadians(target.getHeading());
+        this.headingRad = Math.toRadians(this.target.getHeading());
     }
 
     @PreDestroy

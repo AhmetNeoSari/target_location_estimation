@@ -17,16 +17,4 @@ public class WorldSimulatorApplication {
 		SpringApplication.run(WorldSimulatorApplication.class, args);
 	}
 
-	@Bean
-	public Executor taskExecutor() {
-		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(2);
-		executor.setMaxPoolSize(2);
-		executor.setDaemon(true);
-		executor.setThreadNamePrefix("WorldSimulator-");
-
-		executor.initialize();
-		return executor;
-	}
-
 }
