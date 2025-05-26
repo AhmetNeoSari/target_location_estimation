@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BearingPosition {
-    private int degree;
+    private double degree;
     private double distance;
     private String sourceName;
 
