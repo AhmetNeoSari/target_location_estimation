@@ -9,7 +9,7 @@ What problem is solved?\
 Scenario\
 – A synthetic “world simulator” generates ground-truth & sensor bearings; those bearings travel through Kafka topics; a “central unit” fuses them; a “sensor-control” service configures the sensors.
 <p align="center">
-<img src="./assets/diyagram.drawio.png" alt="Kafka Messaging Diagram" />
+<img src="./assets/diyagram.png" alt="Kafka Messaging Diagram" />
 <br>
 <em>Kafka Messaging Diagram</em>
 </p>
